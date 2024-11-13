@@ -14,7 +14,7 @@ import (
 
 func GetUserBalance(client *ethclient.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 		defer cancel()
 		params := mux.Vars(r)
 		address := params["address"]
@@ -40,17 +40,18 @@ func GetUserBalance(client *ethclient.Client) http.HandlerFunc {
 //get blockNumber
 func GetBlockNumber(client *ethclient.Client)http.HandlerFunc{
 	return func(w http.ResponseWriter, r *http.Request){
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+		defer cancel()
 		blocknumber,err := services.GetBlockNumber(ctx,client)
 		if err !=nil{
 			w.WriteHeader(http.StatusInternalServerError)
-			response:= responses.MessageResponse{Status:http.StatusInternalServerError,Message:"error",Data:map[string]interface{}{"blocknumber",err.Error()}}
+			response:= responses.MessageResponse{Status:http.StatusInternalServerError,Message:"error",Data:map[string]interface{}{"blocknumber":err.Error()}}
 			json.NewEncoder(w).Encode(response)
 			return
 		}
 		w.WriteHeader(http.StatusOK)
 		response:= responses.MessageResponse{Status:http.StatusOK,Message:"Success",Data:map[string]interface{}{"blocknumber":blocknumber}}
 		json.NewEncoder(w).Encode(response)
-		
+
 	}
 }
