@@ -19,3 +19,12 @@ func GetBalance(ctx context.Context, client *ethclient.Client, account string) (
 	fmt.Println("Balance user",balance)
 	return balance, nil
 }
+
+//get blockNumber
+func GetBlockNumber(ctx context.Context, client *ethclient.Client) (*uint64, error){
+	blockNumber, err := client.BlockNumber(ctx)
+	if err != nil {
+		return nil, err
+		}
+		return &blockNumber, nil
+}
