@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -15,5 +16,6 @@ func GetBalance(ctx context.Context, client *ethclient.Client, account string) (
 	if err != nil {
 		return nil, err 
 	}
+	fmt.Println("Balance user",balance)
 	return balance, nil
 }

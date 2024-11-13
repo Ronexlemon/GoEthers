@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetUserBalance(client *ethclient.Client) http.HandleFunc {
+func GetUserBalance(client *ethclient.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
@@ -27,9 +27,9 @@ func GetUserBalance(client *ethclient.Client) http.HandleFunc {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		response := responses.MessageResponse{Status: http.StatusOK, Message: "Success", Data: map[string]interface{}{"data": result}}
+		response := responses.MessageResponse{Status: http.StatusOK, Message: "Success", Data: map[string]interface{}{"balance": balance}}
 		json.NewEncoder(w).Encode(response)
-		
+
 
 
 		
