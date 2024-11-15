@@ -23,6 +23,7 @@ func main(){
 	//router
 	router:= router.NewRouter()
 	routes.GetRoutes(router,client)
+	routes.CreateWalletRoutes(router)
 
 	
 	defer  client.Close()
