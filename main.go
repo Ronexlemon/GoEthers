@@ -24,6 +24,7 @@ func main(){
 	router:= router.NewRouter()
 	routes.GetRoutes(router,client)
 	routes.CreateWalletRoutes(router)
+	routes.CheckAddressType(router,client)
 
 	
 	defer  client.Close()
