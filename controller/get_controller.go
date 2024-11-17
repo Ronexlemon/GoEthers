@@ -55,3 +55,19 @@ func GetBlockNumber(client *ethclient.Client)http.HandlerFunc{
 
 	}
 }
+
+func GetBlockDetails(client *ethclient.Client)http.HandlerFunc{
+	return func(w http.ResponseWriter, r *http.Request){
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+		defer cancel()
+		block,err:= services.GetLatestBlockDetails(ctx,client);
+		if err!=nil{
+			response:=responses.MessageResponse{Status:http.StatusInternalServerError,Message:"error",Data:map[string]interface{}{"data":err.Error()}}
+			json.NewEncoder(w).Encode(response)
+			return}
+			response:=responses.MessageResponse{Status:http.StatusOK,Message:"Sucess",Data:map[string]interface{}{"data":block}}
+			json.NewEncoder(w).Encode(response)
+
+
+	}
+}
