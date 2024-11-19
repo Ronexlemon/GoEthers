@@ -12,7 +12,7 @@ import (
 
 
 
-var RPC_URL = "https://alfajores-forno.celo-testnet.org"
+var RPC_URL =  "https://ethereum-rpc.publicnode.com" //"https://alfajores-forno.celo-testnet.org"
 var add = ":9090"
 func main(){
 	// Create a new client

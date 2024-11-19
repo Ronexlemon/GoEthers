@@ -71,3 +71,27 @@ func GetBlockDetails(client *ethclient.Client)http.HandlerFunc{
 
 	}
 }
+
+func TransactionByHash(client *ethclient.Client)http.HandlerFunc{
+	return func(w http.ResponseWriter, r *http.Request){
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		params := mux.Vars(r)
+		hash := params["hash"]
+		transaction,isPending,err := services.GetTransactionByHash(ctx,client,hash)
+		if err!=nil{
+			response := responses.MessageResponse{Status:http.StatusInternalServerError,Message:"error",Data:map[string]interface{}{"Error":err.Error()}}
+			json.NewEncoder(w).Encode(response)
+			return
+			}
+			if isPending{
+				response := responses.MessageResponse{Status:http.StatusPartialContent,Message:"Pending",Data:map[string]interface{}{"transaction":isPending}}
+			json.NewEncoder(w).Encode(response)
+			return
+
+			}
+			response := responses.MessageResponse{Status:http.StatusOK,Message:"Success",Data:map[string]interface{}{"transaction":transaction}}
+			json.NewEncoder(w).Encode(response)
+
+	}
+}

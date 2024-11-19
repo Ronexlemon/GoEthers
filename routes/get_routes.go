@@ -10,6 +10,7 @@ func GetRoutes(router *mux.Router, client *ethclient.Client) {
 	router.HandleFunc("/balance/{address}", controller.GetUserBalance(client)).Methods("GET")
 	router.HandleFunc("/blocknumber", controller.GetBlockNumber(client)).Methods("GET")
 	router.HandleFunc("/block", controller.GetBlockDetails(client)).Methods("GET")
+	router.HandleFunc("/tx/{hash}", controller.TransactionByHash(client)).Methods("GET")
 }
 
 func CreateWalletRoutes(router *mux.Router) {

@@ -40,33 +40,68 @@ func GetLatestBlockDetails(ctx context.Context, client *ethclient.Client) (types
 	fmt.Println("Current Block", blocknum)
 
 	// Get the latest block (passing nil to get the latest block)
-	blockNumber := big.NewInt(31080000)
+	blockNumber := big.NewInt(int64(*blocknum))
 	block, err := client.BlockByNumber(context.Background(), blockNumber)
-	fmt.Println("Block details", block)
+	
 	if err != nil {
 		return blockcust, err
 
 	}
 
-	fmt.Println("Block Number:", block.Number().Uint64())             // 5671744
-	fmt.Println("Block Timestamp:", block.Time())                     // 1527211625
-	fmt.Println("Block Difficulty:", block.Difficulty().Uint64())     // 3217000136609065
-	fmt.Println("Block Hash:", block.Hash().Hex())                    // 0x9e8751ebb5069389b855bba72d94902cc385042661498a415979b7b6ee9ba4b9
-	fmt.Println("Number of Transactions:", len(block.Transactions())) // 144// 144
+	
 
 	count, err := client.TransactionCount(context.Background(), block.Hash())
 	if err != nil {
 		log.Fatal(err)
 	}
-	blockcust = types.Block{
-		Number: block.Number().Uint64(),
-		Hash:   block.Hash(),
-		//ParentHash:   block.ParentHash(),
-		Time:       block.Time(),
-		Difficulty: block.Difficulty().Uint64(),
-		// Transactions: block.Transactions(),
-	}
+	var transactions []types.Transaction
+
+// Loop through each transaction in the block
+for _, tx := range block.Transactions() {
+    // Add each transaction to the transactions slice
+    transactions = append(transactions, types.Transaction{
+		Hash: tx.Hash(),
+		Nonce  : tx. Nonce(),
+		GasPrice: tx.GasPrice(),
+		//GasLimit: tx.GasLimit(),
+		To: tx.To(),
+		Value: tx.Value(),
+		Input: tx.Data(),
+
+		
+	})
+}
+
+// Construct the blockcust object
+blockcust = types.Block{
+    Number:      block.Number().Uint64(),
+    Hash:        block.Hash(),
+    Time:        block.Time(),
+    Difficulty:  block.Difficulty().Uint64(),
+    Transactions: transactions, // Assign the list of transactions
+}
 
 	fmt.Println("Count", count)
 	return blockcust, nil
+}
+
+func GetTransactionByHash(ctx context.Context,client *ethclient.Client, hash  string)(types.Transaction,bool,error){
+	var transaction types.Transaction
+	hashit := common.HexToHash(hash)
+	tx,isPending, err := client.TransactionByHash(ctx,hashit);
+	if err !=nil{
+		return transaction,isPending,err
+	}
+	transaction = types.Transaction{
+		Hash: tx.Hash(),
+		//BlockNumber: tx.BlockNumber(),
+		//BlockHash: tx.BlockHash(),
+		//From: tx.From(),
+		//To: tx.To(),
+		//Value: tx.Value(),
+		//Gas: tx.Gas(),
+		//GasPrice: tx.GasPrice(),
+		//Nonce: tx.Nonce(),
+		}
+		return transaction,isPending,nil
 }

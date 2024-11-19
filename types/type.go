@@ -16,9 +16,9 @@ type Block struct {
 type Transaction struct {
     Hash       common.Hash // Transaction hash
     Nonce      uint64      // Transaction nonce
-    //BlockHash  common.Hash // Hash of the block containing the transaction
-   // BlockNumber *big.Int   // Block number
-   // From       common.Address // Sender address
+    BlockHash  common.Hash // Hash of the block containing the transaction
+   BlockNumber *big.Int   // Block number
+   From       common.Address // Sender address
     To         *common.Address // Receiver address, nil for contract creation
     Value      *big.Int    // Value in wei
     Gas        uint64      // Gas limit
