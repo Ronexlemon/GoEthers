@@ -58,7 +58,7 @@ func GetBlockNumber(client *ethclient.Client)http.HandlerFunc{
 
 func GetBlockDetails(client *ethclient.Client)http.HandlerFunc{
 	return func(w http.ResponseWriter, r *http.Request){
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		block,err:= services.GetLatestBlockDetails(ctx,client);
 		if err!=nil{
