@@ -94,14 +94,14 @@ func GetTransactionByHash(ctx context.Context,client *ethclient.Client, hash  st
 	}
 	transaction = types.Transaction{
 		Hash: tx.Hash(),
-		//BlockNumber: tx.BlockNumber(),
-		//BlockHash: tx.BlockHash(),
-		//From: tx.From(),
-		//To: tx.To(),
-		//Value: tx.Value(),
-		//Gas: tx.Gas(),
-		//GasPrice: tx.GasPrice(),
-		//Nonce: tx.Nonce(),
+		// BlockNumber: tx.BlockNumber(),
+		// BlockHash: tx.BlockHash(),
+		// From: tx.From(),
+		To: tx.To(),
+		Value: tx.Value(),
+		Gas: tx.Gas(),
+		GasPrice: tx.GasPrice(),
+		Nonce: tx.Nonce(),
 		}
 		return transaction,isPending,nil
 }
