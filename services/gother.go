@@ -36,6 +36,7 @@ func GetLatestBlockDetails(ctx context.Context, client *ethclient.Client) (types
 
 	// Get the latest block (passing nil to get the latest block)
 	blockNumber,err := GetBlockNumber(context.Background(),client)
+	//recheck
 	if err != nil {
 		return blockcust, err}
 		blockNumberBigInt := new(big.Int).SetUint64(*blockNumber)
